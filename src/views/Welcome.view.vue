@@ -16,12 +16,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-screen px-4 flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-    <div class="w-full max-w-lg px-8 py-8 rounded-3xl bg-white shadow-lg text-center" id="welcome">
-      <img class="w-24 h-24 mx-auto mb-6" src="@/assets/whisper.svg" alt="Whisper Logo" />
-      <h1 class="text-4xl font-bold mb-4 text-gray-800 leading-tight">Welcome to Haven</h1>
-      <p class="text-lg text-gray-600 mb-10">A safe, simple, and modern messaging experience.</p>
-      <RouterLink class="inline-block py-3 px-10 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:bg-gray-700 focus:outline-none select-none" to="/setup">Get Started</RouterLink>
+  <div class="w-full h-screen px-4 flex items-center justify-center bg-gradient-to-br from-purple-100 to-blue-200">
+    <div class="w-full max-w-lg px-8 py-8 lg:px-10 lg:py-12 rounded-3xl bg-white shadow-lg text-center" id="welcome">
+      <img class="w-18 h-18 lg:w-24 lg:h-24 mx-auto mb-6" src="@/assets/whisper.svg" alt="Whisper Logo" />
+      <h1 class="text-3xl lg:text-4xl font-bold mb-4 text-gray-800 leading-tight">Welcome to Haven</h1>
+      <p class="lg:text-lg text-gray-600 mb-10">A safe, simple, and modern messaging experience.</p>
+      <RouterLink class="text-sm lg:text-base inline-block py-3 px-10 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:bg-gray-700 focus:outline-none select-none" to="/setup">Get Started</RouterLink>
     </div>
   </div>
 </template>
