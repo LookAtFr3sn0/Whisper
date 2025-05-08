@@ -16,6 +16,13 @@ app
     .use(cookieParser())
     .use(express.static(staticPath));
 
+app.get("/", (req, res) => {
+    res.sendFile(join(staticPath, "index.html"), (err) => {
+        if (err) res.status(400).send("Error while loading the page").end();
+    })
+});
+
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
