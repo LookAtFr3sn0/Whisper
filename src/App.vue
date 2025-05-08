@@ -3,8 +3,6 @@ import Navbar from '@/components/Navbar.view.vue'
 </script>
 
 <template>
-  <main>
-    <RouterView />
-  </main>
+  <RouterView />
   <Navbar v-if="$route.meta.showNav" />
 </template>
