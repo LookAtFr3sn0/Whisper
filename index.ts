@@ -16,7 +16,7 @@ app
     .use(cookieParser())
     .use(express.static(staticPath));
 
-app.get("/", (req, res) => {
+app.get("/*splat", (req, res) => {
     res.sendFile(join(staticPath, "index.html"), (err) => {
         if (err) res.status(400).send("Error while loading the page").end();
     })
