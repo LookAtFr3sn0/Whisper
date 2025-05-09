@@ -68,7 +68,7 @@ const onRegister = async () => {
 	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) return;
 
 	const { clientRegistrationState, registrationRequest } = opaque.client.startRegistration({ password: password.value });
-	let response;
+	let response, token, registrationResponse;
 	try {
 		response = await fetch('/api/register/handshake', {
 			method: 'POST',
@@ -78,7 +78,7 @@ const onRegister = async () => {
 		if (!response.ok) {
 			throw new Error('Network response was not ok ' + response.statusText);
 		}
-		const { registrationResponse } = await response.json();
+		({ token, registrationResponse } = await response.json());
 		const { registrationRecord } = opaque.client.finishRegistration({ clientRegistrationState, registrationResponse, password: password.value });
 		response = await fetch('/api/register/verify', {
 			method: 'POST',
@@ -94,9 +94,31 @@ const onRegister = async () => {
 	} finally {
 		isSubmitting.value = false;
 	}
-	if (response.ok) {
-		console.log('Registration successful!');
+	if (!response.ok) {
+		console.error('Error during registration verification:', response.statusText);
+		return;
 	}
+	const { registrationRecord } = opaque.client.finishRegistration({
+		clientRegistrationState,
+		registrationResponse,
+		password: password.value,
+	});
+	
+	try {
+		response = await fetch('/api/register/verify', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ token, registrationRecord }),
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok ' + response.statusText);
+		}
+	} catch (error) {
+		console.error('Error during registration verification:', error);
+	} finally {
+		isSubmitting.value = false;
+	}
+	console.log('Registration successful:', response.json());
 }
 
 onMounted(async () => {
