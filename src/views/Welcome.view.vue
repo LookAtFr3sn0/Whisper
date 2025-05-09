@@ -1,10 +1,12 @@
 <script setup>
-import { onMounted, nextTick, ref } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 import * as EmailValidator from 'email-validator';
 import * as opaque from "@serenity-kit/opaque";
 import gsap from 'gsap';
 
-const page                 = ref('signup-complete');
+const router = useRouter();
+const page                 = ref('signin');
 const username 	           = ref('');
 const email                = ref('');
 const password             = ref('');
@@ -91,6 +93,47 @@ const onRegister = async () => {
 	email.value = '';
 	password.value = '';
 	confirmPassword.value = '';
+}
+
+const onLogin = async () => {
+	isSubmitting.value = true;
+
+	const { clientLoginState, startLoginRequest } = opaque.client.startLogin({ password: password.value });
+	let response, loginResponse, finishLoginRequest, sessionKey;
+	try {
+		response = await fetch('/api/login/handshake', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username: username.value, startLoginRequest }),
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok ' + response.statusText);
+		};
+		({ loginResponse } = await response.json());
+		
+		const loginResult = opaque.client.finishLogin({
+			clientLoginState,
+			loginResponse,
+			password,
+		});
+		if (!loginResult) {
+			throw new Error("Login failed");
+		}
+		({ finishLoginRequest, sessionKey } = loginResult);
+		response = await fetch('/api/login/verify', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username: username.value, finishLoginRequest }),
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok ' + response.statusText);
+		}
+	} catch (error) {
+		console.error('Error during login:', error);
+	} finally {
+		isSubmitting.value = false;
+	}
+	router.push({ name: 'inbox' });
 }
 
 onMounted(async () => {
