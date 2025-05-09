@@ -23,7 +23,7 @@ export default async (req, res) => {
     console.error('Error querying database:', err);
     return res.status(500).json({ error: 'Internal server error' });
   }
-  if (results) return res.status(400).json({ error: 'Username taken' });
+  if (results.length > 0) return res.status(400).json({ error: 'Username taken' });
   
   const { registrationResponse } = opaque.server.createRegistrationResponse({ serverSetup, userIdentifier: username, registrationRequest });
   res.status(200).json({ registrationResponse });
