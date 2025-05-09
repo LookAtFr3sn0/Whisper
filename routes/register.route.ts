@@ -1,4 +1,5 @@
 import express from "express";
+
 import registerHandshake from "../handlers/registerHandshake.handler.ts";
 import registerVerify from "../handlers/registerVerify.handler.ts";
 
