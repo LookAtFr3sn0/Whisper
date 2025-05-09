@@ -85,10 +85,20 @@ const onRegister = async () => {
 			throw new Error('Network response was not ok ' + response.statusText);
 		}
 		({ token, registrationResponse } = await response.json());
+		const { registrationRecord } = opaque.client.finishRegistration({ clientRegistrationState, registrationResponse, password: password.value });
+		response = await fetch('/api/register/verify', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username: username.value, registrationRecord }),
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok ' + response.statusText);
+		}
 	} catch (error) {
 		console.error('Error during registration handshake:', error);
-		isSubmitting.value = false;
 		return;
+	} finally {
+		isSubmitting.value = false;
 	}
 	if (!response.ok) {
 		console.error('Error during registration verification:', response.statusText);
@@ -100,6 +110,7 @@ const onRegister = async () => {
 		registrationResponse,
 		password: password.value,
 	});
+	
 	try {
 		response = await fetch('/api/register/verify', {
 			method: 'POST',
