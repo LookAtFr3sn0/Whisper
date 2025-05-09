@@ -1,7 +1,6 @@
 import Sequelize from "sequelize";
 import sequelize from "../utils/db.js";
 import * as opaque from "@serenity-kit/opaque";
-import jwt from "jsonwebtoken";
 
 const serverSetup = process.env.OPAQUE_SERVER_SETUP as string;
 const jwtSecret = process.env.JWT_SECRET as string;
