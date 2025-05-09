@@ -4,6 +4,7 @@ import { v7 as uuidv7 } from 'uuid';
 import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 import * as opaque from "@serenity-kit/opaque";
+import crypto from 'crypto';
 
 const serverSetup = process.env.OPAQUE_SERVER_SETUP;
 
