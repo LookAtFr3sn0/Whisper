@@ -11,8 +11,12 @@
   "author": "LookAtFr3sn0",
   "dependencies": {
     "@serenity-kit/opaque": "^0.9.0",
+    "argon2": "^0.43.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "email-validator": "^2.0.4",
+    "express": "^5.1.0",
+    "sequelize": "^6.37.7",
+    "uuid": "^11.1.0"
   }
 }
