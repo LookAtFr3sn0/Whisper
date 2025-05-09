@@ -1,4 +1,3 @@
-import * as argon2 from 'argon2';
 import * as EmailValidator from 'email-validator';
 import { v7 as uuidv7 } from 'uuid';
 import Sequelize from 'sequelize';
