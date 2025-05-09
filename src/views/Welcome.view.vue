@@ -118,7 +118,6 @@ const onRegister = async () => {
 	} finally {
 		isSubmitting.value = false;
 	}
-	console.log('Registration successful:', response.json());
 }
 
 onMounted(async () => {
