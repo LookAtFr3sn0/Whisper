@@ -4,7 +4,7 @@ import * as EmailValidator from 'email-validator';
 import * as opaque from "@serenity-kit/opaque";
 import gsap from 'gsap';
 
-const page                 = ref('welcome');
+const page                 = ref('signup-complete');
 const username 	           = ref('');
 const email                = ref('');
 const password             = ref('');
@@ -86,6 +86,11 @@ const onRegister = async () => {
 	} finally {
 		isSubmitting.value = false;
 	}
+	page.value = 'signup-complete';
+	username.value = '';
+	email.value = '';
+	password.value = '';
+	confirmPassword.value = '';
 }
 
 onMounted(async () => {
@@ -240,6 +245,12 @@ onMounted(async () => {
 						<button class="text-sm lg:text-base inline-block py-3 px-8 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:shadow-xl hover:scale-105 focus:outline-none select-none" type="submit">Sign up</button>
 					</div>
 				</form>
+			</div>
+
+			<div v-else-if="page === 'signup-complete'">
+				<h1 class="text-3xl lg:text-4xl font-extrabold mb-4 py-1 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Sign up complete</h1>
+				<p class="lg:text-lg text-gray-700 mb-10">An email has been sent to your email address. Please check your inbox to complete the registration process.</p>
+				<button class="text-sm lg:text-base inline-block py-3 px-8 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:shadow-xl hover:scale-105 focus:outline-none select-none" @click="page = 'signin'">Sign in</button>
 			</div>
 
     </div>
