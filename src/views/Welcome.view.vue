@@ -121,7 +121,7 @@ onMounted(async () => {
 						</div>
 					</div>
 					<div class="flex items-center justify-between mt-4 mb-6">
-						<a class="text-sm text-gray-500 hover:text-gray-700 font-semibold" @click="page = 'login'">Already have an account?</a>
+						<a class="text-sm text-gray-500 hover:text-gray-700 font-semibold" @click="page = 'signin'">Already have an account?</a>
 						<button class="text-sm lg:text-base inline-block py-3 px-8 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:shadow-xl hover:scale-105 focus:outline-none select-none" type="submit">Sign up</button>
 					</div>
 				</form>
@@ -181,7 +181,7 @@ onMounted(async () => {
 						</div>
 					</div>
 					<div class="flex items-center justify-between mt-4 mb-6">
-						<a class="text-sm text-gray-500 hover:text-gray-700 font-semibold" @click="page = 'login'">Already have an account?</a>
+						<a class="text-sm text-gray-500 hover:text-gray-700 font-semibold" @click="page = 'signup'">Don't have an account?</a>
 						<button class="text-sm lg:text-base inline-block py-3 px-8 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:shadow-xl hover:scale-105 focus:outline-none select-none" type="submit">Sign up</button>
 					</div>
 				</form>
