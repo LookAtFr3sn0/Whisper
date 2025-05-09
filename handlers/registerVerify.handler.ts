@@ -25,7 +25,7 @@ export default async (req, res) => {
         type: Sequelize.QueryTypes.INSERT,
       }
     );
-    return res.status(201).json({ success: true, results });
+    return res.status(201).json({ success: true, username: results[0][0].username });
   } catch (err) {
     console.error('Error saving registration record:', err);
     return res.status(500).json({ error: 'Internal server error' });
