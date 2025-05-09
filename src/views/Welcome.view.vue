@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, nextTick, ref } from 'vue';
+import * as EmailValidator from 'email-validator'
 import gsap from 'gsap';
 
 const page                 = ref('signin');
@@ -12,14 +13,43 @@ const emailError           = ref('');
 const passwordError        = ref('');
 const confirmPasswordError = ref('');
 const passwordStrength     = ref('');
+const showPassword         = ref(false);
 
-const showPassword = ref(false);
-
-
-const onRegister = () => {
-
+const validateUsername = () => {
+	if (username.value.length < 3 || username.value.length > 40) {
+		usernameError.value = 'Username must be between 3 and 40 characters.';
+	} else if (!/^[a-zA-Z0-9_]+$/.test(username.value)) {
+		usernameError.value = 'Username can only contain letters, numbers, and underscores.';
+	} else {
+		usernameError.value = '';
+	}
 }
 
+const validateEmail = () => {
+	if (!email.value) {
+		emailError.value = 'Email is required.';
+	} else if (!EmailValidator.validate(email.value)) {
+		emailError.value = 'Invalid email address.';
+	} else {
+		emailError.value = '';
+	}
+}
+
+const validatePassword = () => {
+	if (password.value.length < 8 || password.value.length > 256) {
+		passwordError.value = 'Password must be between 8 and 256 characters.';
+	} else if (!/[A-Z]/.test(password.value)) {
+		passwordError.value = 'Password must contain at least one uppercase letter.';
+	} else if (!/[a-z]/.test(password.value)) {
+		passwordError.value = 'Password must contain at least one lowercase letter.';
+	} else if (!/[0-9]/.test(password.value)) {
+		passwordError.value = 'Password must contain at least one number.';
+	} else if (!/[^A-Za-z0-9]/.test(password.value)) {
+		passwordError.value = 'Password must contain at least one special character.';
+	} else {
+		passwordError.value = '';
+	}
+}
 
 onMounted(async () => {
 	await nextTick();
@@ -71,6 +101,7 @@ onMounted(async () => {
 								required
 							/>
 							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="username">Username</label>
+							<span v-if="usernameError" class="text-red-400 text-xs mt-1">{{ usernameError }}</span>
 						</div>
 						<div>
 							<input
@@ -85,6 +116,7 @@ onMounted(async () => {
 								required
 							/> 
 							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="email">Email</label>
+							<span v-if="emailError" class="text-red-400 text-xs mt-1">{{ emailError }}</span>
 						</div>
 						<div>
 							<div class="flex items-center relative">
@@ -103,6 +135,7 @@ onMounted(async () => {
 								<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="password">Password</label>
 								<span class="material-symbols-outlined text-gray-500 text-sm absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer" @click="showPassword = !showPassword">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
 							</div>
+							<span v-if="passwordError" class="text-red-400 text-xs mt-1">{{ passwordError }}</span>
 						</div>
 						<div>
 							<input
@@ -118,6 +151,7 @@ onMounted(async () => {
 								required
 							/>
 							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="confirm-password">Confirm Password</label>
+							<span v-if="confirmPasswordError" class="text-red-400 text-xs mt-1">{{ confirmPasswordError }}</span>
 						</div>
 					</div>
 					<div class="flex items-center justify-between mt-4 mb-6">
@@ -137,7 +171,6 @@ onMounted(async () => {
 								v-model="username"
 								type="text"
 								id="username"
-								@blur="validateUsername"
 								placeholder=" "
 								minlength="3"
 								maxlength="40"
@@ -148,27 +181,12 @@ onMounted(async () => {
 							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="username">Username</label>
 						</div>
 						<div>
-							<input
-								class="peer px-3 pt-6 pb-2 border border-neutral-300 rounded-lg focus:outline-none focus:border-blue-400 duration-200"
-								v-model="email"
-								type="email"
-								id="email"
-								@blur="validateEmail"
-								placeholder=" "
-								maxlength="255"
-								autocomplete="email"
-								required
-							/> 
-							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="email">Email</label>
-						</div>
-						<div>
 							<div class="flex items-center relative">
 								<input
 									class="peer w-full pr-12 px-3 pt-6 pb-2 border border-neutral-300 rounded-lg focus:outline-none focus:border-blue-400 duration-200"
 									v-model="password"
 									:type="showPassword ? 'text' : 'password'"
 									id="password"
-									@blur="validatePassword"
 									placeholder=" "
 									minlength="8"
 									maxlength="256"
