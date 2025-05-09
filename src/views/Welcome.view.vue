@@ -4,7 +4,7 @@ import * as EmailValidator from 'email-validator';
 import * as opaque from "@serenity-kit/opaque";
 import gsap from 'gsap';
 
-const page                 = ref('signin');
+const page                 = ref('welcome');
 const username 	           = ref('');
 const email                = ref('');
 const password             = ref('');
@@ -63,9 +63,15 @@ const validateConfirmPassword = () => {
 
 const onRegister = async () => {
 	isSubmitting.value = true;
-	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) return;
+	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) {
+		isSubmitting.value = false;
+		return;
+	}
 	validateUsername() && validateEmail() && validatePassword() && validateConfirmPassword();
-	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) return;
+	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) {
+		isSubmitting.value = false;
+		return;
+	}
 
 	const { clientRegistrationState, registrationRequest } = opaque.client.startRegistration({ password: password.value });
 	let response, token, registrationResponse;
@@ -79,23 +85,14 @@ const onRegister = async () => {
 			throw new Error('Network response was not ok ' + response.statusText);
 		}
 		({ token, registrationResponse } = await response.json());
-		const { registrationRecord } = opaque.client.finishRegistration({ clientRegistrationState, registrationResponse, password: password.value });
-		response = await fetch('/api/register/verify', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ username: username.value, registrationRecord }),
-		});
-		if (!response.ok) {
-			throw new Error('Network response was not ok ' + response.statusText);
-		}
 	} catch (error) {
 		console.error('Error during registration handshake:', error);
-		return;
-	} finally {
 		isSubmitting.value = false;
+		return;
 	}
 	if (!response.ok) {
 		console.error('Error during registration verification:', response.statusText);
+		isSubmitting.value = false;
 		return;
 	}
 	const { registrationRecord } = opaque.client.finishRegistration({
@@ -103,7 +100,6 @@ const onRegister = async () => {
 		registrationResponse,
 		password: password.value,
 	});
-	
 	try {
 		response = await fetch('/api/register/verify', {
 			method: 'POST',
@@ -118,6 +114,7 @@ const onRegister = async () => {
 	} finally {
 		isSubmitting.value = false;
 	}
+	console.log(await response.json());
 }
 
 onMounted(async () => {
