@@ -15,6 +15,7 @@ const passwordError        = ref('');
 const confirmPasswordError = ref('');
 const passwordStrength     = ref('');
 const showPassword         = ref(false);
+const isSubmitting         = ref(false);
 
 const validateUsername = () => {
 	if (username.value.length < 3 || username.value.length > 40) {
@@ -61,20 +62,42 @@ const validateConfirmPassword = () => {
 }
 
 const onRegister = async () => {
-	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) {
-		return;
-	}
-	validateUsername();
-	validateEmail();
-	validatePassword();
-	validateConfirmPassword();
-	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) {
-		return;
+	isSubmitting.value = true;
+	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) return;
+	validateUsername() && validateEmail() && validatePassword() && validateConfirmPassword();
+	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) return;
 
-	}
 	await opaque.ready();
-	
-
+	const { clientRegistrationState, registrationRequest } = opaque.client.startRegistration({ password: password.value });
+	let response;
+	try {
+		response = await fetch('/api/register/handshake', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username: username.value, email: email.value, registrationRequest }),
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok ' + response.statusText);
+		}
+		const { registrationResponse } = await response.json();
+		const { registrationRecord } = opaque.client.finishRegistration({ clientRegistrationState, registrationResponse, password: password.value });
+		response = await fetch('/api/register/verify', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username: username.value, registrationRecord }),
+		});
+		if (!response.ok) {
+			throw new Error('Network response was not ok ' + response.statusText);
+		}
+	} catch (error) {
+		console.error('Error during registration handshake:', error);
+		return;
+	} finally {
+		isSubmitting.value = false;
+	}
+	if (response.ok) {
+		console.log('Registration successful!');
+	}
 }
 
 onMounted(async () => {
@@ -182,7 +205,7 @@ onMounted(async () => {
 					</div>
 					<div class="flex items-center justify-between mt-4 mb-6">
 						<a class="text-sm text-gray-500 hover:text-gray-700 font-semibold" @click="page = 'signin'">Already have an account?</a>
-						<button class="text-sm lg:text-base inline-block py-3 px-8 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:shadow-xl hover:scale-105 focus:outline-none select-none" type="submit">Sign up</button>
+						<button class="text-sm lg:text-base inline-block py-3 px-8 bg-gray-800 text-white rounded-full font-semibold transition duration-200 hover:shadow-xl hover:scale-105 focus:outline-none select-none" type="submit" :disabled="isSubmitting">Sign up</button>
 					</div>
 				</form>
 			</div>
