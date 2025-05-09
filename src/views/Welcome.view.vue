@@ -51,6 +51,30 @@ const validatePassword = () => {
 	}
 }
 
+const validateConfirmPassword = () => {
+	if (confirmPassword.value !== password.value) {
+		confirmPasswordError.value = 'Passwords do not match.';
+	} else {
+		confirmPasswordError.value = '';
+	}
+}
+
+const onRegister = async () => {
+	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) {
+		return;
+	}
+	validateUsername();
+	validateEmail();
+	validatePassword();
+	validateConfirmPassword();
+	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) {
+		return;
+	}
+
+	
+
+}
+
 onMounted(async () => {
 	await nextTick();
 	const card = document.getElementById('auth-card');
