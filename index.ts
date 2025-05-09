@@ -4,6 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+import apiRoutes from './routes/api.route.ts';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticPath = join(__dirname, 'public');
@@ -14,6 +16,7 @@ app
     .use(express.json())
     .use(cors())
     .use(cookieParser())
+    .use('/api', apiRoutes)
     .use(express.static(staticPath));
 
 app.get("/*splat", (req, res) => {
