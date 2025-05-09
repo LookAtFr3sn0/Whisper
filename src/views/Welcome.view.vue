@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, nextTick, ref } from 'vue';
-import * as EmailValidator from 'email-validator'
+import * as EmailValidator from 'email-validator';
+import * as opaque from "@serenity-kit/opaque";
 import gsap from 'gsap';
 
 const page                 = ref('signin');
@@ -69,8 +70,9 @@ const onRegister = async () => {
 	validateConfirmPassword();
 	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) {
 		return;
-	}
 
+	}
+	await opaque.ready();
 	
 
 }
