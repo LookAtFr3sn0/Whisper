@@ -18,13 +18,9 @@ const showPassword         = ref(false);
 const isSubmitting         = ref(false);
 
 const validateUsername = () => {
-	if (username.value.length < 3 || username.value.length > 40) {
-		usernameError.value = 'Username must be between 3 and 40 characters.';
-	} else if (!/^[a-zA-Z0-9_]+$/.test(username.value)) {
-		usernameError.value = 'Username can only contain letters, numbers, and underscores.';
-	} else {
-		usernameError.value = '';
-	}
+	if (username.value.length < 3 || username.value.length > 40) usernameError.value = 'Username must be between 3 and 40 characters.';
+	else if (!/^[a-zA-Z0-9_.-]+$/.test(username.value)) usernameError.value = 'Username can only contain letters, numbers, and underscores.';
+	else usernameError.value = '';
 }
 
 const validateEmail = () => {
@@ -38,19 +34,12 @@ const validateEmail = () => {
 }
 
 const validatePassword = () => {
-	if (password.value.length < 8 || password.value.length > 256) {
-		passwordError.value = 'Password must be between 8 and 256 characters.';
-	} else if (!/[A-Z]/.test(password.value)) {
-		passwordError.value = 'Password must contain at least one uppercase letter.';
-	} else if (!/[a-z]/.test(password.value)) {
-		passwordError.value = 'Password must contain at least one lowercase letter.';
-	} else if (!/[0-9]/.test(password.value)) {
-		passwordError.value = 'Password must contain at least one number.';
-	} else if (!/[^A-Za-z0-9]/.test(password.value)) {
-		passwordError.value = 'Password must contain at least one special character.';
-	} else {
-		passwordError.value = '';
-	}
+	if (password.value.length < 8 || password.value.length > 256) passwordError.value = 'Password must be between 8 and 256 characters.';
+	else if (!/[A-Z]/.test(password.value)) passwordError.value = 'Password must contain at least one uppercase letter.';
+	else if (!/[a-z]/.test(password.value)) passwordError.value = 'Password must contain at least one lowercase letter.';
+	else if (!/[0-9]/.test(password.value)) passwordError.value = 'Password must contain at least one number.';
+	else if (!/[a-zA-Z0-9]/.test(password.value)) passwordError.value = 'Password must contain at least one special character.';
+	else passwordError.value = '';
 }
 
 const validateConfirmPassword = () => {
@@ -110,7 +99,7 @@ const onRegister = async () => {
 		registrationResponse,
 		password: password.value,
 	});
-	
+	console.log(token);
 	try {
 		response = await fetch('/api/register/verify', {
 			method: 'POST',
