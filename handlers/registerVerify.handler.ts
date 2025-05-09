@@ -1,11 +1,13 @@
  import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
+import * as EmailValidator from 'email-validator';
 import jwt from 'jsonwebtoken';
 import { v7 as uuidv7 } from 'uuid';
 
 export default async (req, res) => {
   const { email, token, registrationRecord } = req.body;
   if (!email || !token || !registrationRecord) return res.status(400).json({ error: 'All fields are required' });
+  if (!EmailValidator.validate(email)) return res.status(400).json({ error: 'Invalid email' });
   let username;
   try {
     username = jwt.verify(token, process.env.JWT_SECRET).username;

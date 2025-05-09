@@ -1,4 +1,3 @@
-import * as EmailValidator from 'email-validator';
 import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 import * as opaque from "@serenity-kit/opaque";
