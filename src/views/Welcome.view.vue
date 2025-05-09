@@ -67,7 +67,6 @@ const onRegister = async () => {
 	validateUsername() && validateEmail() && validatePassword() && validateConfirmPassword();
 	if (usernameError.value || emailError.value || passwordError.value || confirmPasswordError.value) return;
 
-	await opaque.ready();
 	const { clientRegistrationState, registrationRequest } = opaque.client.startRegistration({ password: password.value });
 	let response;
 	try {
