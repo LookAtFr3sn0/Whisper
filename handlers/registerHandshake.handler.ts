@@ -28,6 +28,6 @@ export default async (req, res) => {
   if (results.length > 0) return res.status(400).json({ error: 'Username taken' });
   
   const { registrationResponse } = opaque.server.createRegistrationResponse({ serverSetup, userIdentifier: username, registrationRequest });
-  const token = jwt.sign({ username } , jwtSecret, { expiresIn: '5m' });
+  const token = jwt.sign({ username } , jwtSecret, { expiresIn: '2m' });
   res.status(200).json({ token, registrationResponse });
 };
