@@ -2,8 +2,10 @@ import * as EmailValidator from 'email-validator';
 import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 import * as opaque from "@serenity-kit/opaque";
+import jwt from 'jsonwebtoken';
 
 const serverSetup = process.env.OPAQUE_SERVER_SETUP as string;
+const jwtSecret = process.env.JWT_SECRET as string;
 
 export default async (req, res) => {
   const { username, email, registrationRequest } = req.body;
@@ -26,5 +28,6 @@ export default async (req, res) => {
   if (results.length > 0) return res.status(400).json({ error: 'Username taken' });
   
   const { registrationResponse } = opaque.server.createRegistrationResponse({ serverSetup, userIdentifier: username, registrationRequest });
-  res.status(200).json({ registrationResponse });
+  const token = jwt.sign({ username } , jwtSecret, { expiresIn: '5m' });
+  res.status(200).json({ token, registrationResponse });
 };
