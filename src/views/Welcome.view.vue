@@ -54,25 +54,66 @@ onMounted(async () => {
 			<div v-else-if="page === 'signup'">
 				<h1 class="text-3xl lg:text-4xl font-extrabold mb-4 py-1 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Sign up</h1>
 				<form class="flex flex-col gap-4" @submit.prevent="onRegister()">
-					<div class="flex flex-col gap-4 *:flex *:flex-col *:gap-2">
+					<div class="flex flex-col gap-4 *:flex *:flex-col *:gap-2 *:relative">
 						<div>
-							<label class="w-full text-left text-gray-700 font-semibold" for="username">Username</label>
-							<input class="border-2 border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-400" v-model="username" type="text" id="username" placeholder="Enter your username" minlength="3" maxlength="40" autocomplete="username" required />
+							<input
+								class="peer px-3 pt-6 pb-2 border border-neutral-300 rounded-lg focus:outline-none focus:border-blue-400 duration-200"
+								v-model="username"
+								type="text"
+								id="username"
+								@blur="validateUsername"
+								placeholder=" "
+								minlength="3"
+								maxlength="40"
+								autocomplete="username"
+								pattern="^[a-zA-Z0-9_]+$"
+								required
+							/>
+							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="username">Username</label>
 						</div>
 						<div>
-							<label class="w-full text-left text-gray-700 font-semibold" for="email">Email</label>
-							<input class="border-2 border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-400" v-model="email" type="email" id="email" placeholder="Enter your email" maxlength="255" autocomplete="email" required /> 
+							<input
+								class="peer px-3 pt-6 pb-2 border border-neutral-300 rounded-lg focus:outline-none focus:border-blue-400 duration-200"
+								v-model="email"
+								type="email"
+								id="email"
+								placeholder=" "
+								maxlength="255"
+								autocomplete="email"
+								required
+							/> 
+							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="email">Email</label>
 						</div>
 						<div>
-							<label class="text-left text-gray-700 font-semibold" for="password">Password</label>
 							<div class="flex items-center relative">
-								<input class="w-full border-2 border-gray-300 rounded-lg p-3 pr-12 focus:outline-none focus:border-blue-400" v-model="password" :type="showPassword ? 'text' : 'password'" id="password" placeholder="Enter your password" minlength="8" maxlength="256" autocomplete="new-password" required />
+								<input
+									class="peer w-full pr-12 px-3 pt-6 pb-2 border border-neutral-300 rounded-lg focus:outline-none focus:border-blue-400 duration-200"
+									v-model="password"
+									:type="showPassword ? 'text' : 'password'"
+									id="password"
+									placeholder=" "
+									minlength="8"
+									maxlength="256"
+									autocomplete="new-password"
+									required
+								/>
+								<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="password">Password</label>
 								<span class="material-symbols-outlined text-gray-500 text-sm absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer" @click="showPassword = !showPassword">{{ showPassword ? 'visibility' : 'visibility_off' }}</span>
 							</div>
 						</div>
 						<div>
-							<label class="w-full text-left text-gray-700 font-semibold" for="confirm-password">Confirm Password</label>
-							<input class="border-2 border-gray-300 rounded-lg p-3 focus:outline-none focus:border-blue-400" v-model="confirmPassword" :type="showPassword ? 'text' : 'password'" id="confirm-password" placeholder="Re-enter your password" minlength="8" maxlength="256" autocomplete="new-password" required />
+							<input
+								class="peer px-3 pt-6 pb-2 border border-neutral-300 rounded-lg focus:outline-none focus:border-blue-400 duration-200"
+								v-model="confirmPassword"
+								:type="showPassword ? 'text' : 'password'"
+								id="confirm-password"
+								placeholder=" "
+								minlength="8"
+								maxlength="256"
+								autocomplete="new-password"
+								required
+							/>
+							<label class="absolute left-3 top-2 text-neutral-500 text-sm transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-sm font-semibold select-none" for="confirm-password">Confirm Password</label>
 						</div>
 					</div>
 					<div class="flex items-center justify-between mt-4 mb-6">
