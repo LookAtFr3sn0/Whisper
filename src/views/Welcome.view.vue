@@ -115,7 +115,7 @@ const onRegister = async () => {
 		response = await fetch('/api/register/verify', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ token, registrationRecord }),
+			body: JSON.stringify({ email, token, registrationRecord }),
 		});
 		if (!response.ok) {
 			throw new Error('Network response was not ok ' + response.statusText);
