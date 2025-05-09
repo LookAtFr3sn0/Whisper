@@ -1,11 +1,9 @@
 import * as EmailValidator from 'email-validator';
-import { v7 as uuidv7 } from 'uuid';
 import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 import * as opaque from "@serenity-kit/opaque";
-import crypto from 'crypto';
 
-const serverSetup = process.env.OPAQUE_SERVER_SETUP;
+const serverSetup = process.env.OPAQUE_SERVER_SETUP as string;
 
 export default async (req, res) => {
   const { username, email, registrationRequest } = req.body;
@@ -26,22 +24,7 @@ export default async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
   if (results) return res.status(400).json({ error: 'Username taken' });
-  try {
-    results = await sequelize.query(
-      `SELECT * FROM "user".auth WHERE email = :email`,
-      {
-        replacements: { email },
-        type: Sequelize.QueryTypes.SELECT,
-      }
-    );
-  } catch (err) {
-    console.error('Error querying database:', err);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-  if (results) {
-    await new Promise((resolve) => setTimeout(resolve, crypto.randomInt(50, 120)));
-    return res.status(200).json({ error: 'Email sent' });
-  } else {
-    //todo send email to user with code to create account
-  }
-}
+  
+  const { registrationResponse } = opaque.server.createRegistrationResponse({ serverSetup, userIdentifier: username, registrationRequest });
+  res.status(200).json({ registrationResponse });
+};
