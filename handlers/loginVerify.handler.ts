@@ -10,9 +10,7 @@ export default async (req, res) => {
     results = await sequelize.query(
       `SELECT a.id, ls.login_state FROM "user".auth a
       JOIN "user".login_state ls ON a.id = ls.user_id
-      WHERE a.username = :username
-      ORDER BY a.id
-      LIMIT 1`,
+      WHERE a.username = :username`,
       {
         replacements: { username },
         type: Sequelize.QueryTypes.SELECT,
