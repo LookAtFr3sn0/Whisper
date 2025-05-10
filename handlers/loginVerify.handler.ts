@@ -34,7 +34,7 @@ export default async (req, res) => {
       serverLoginState,
     }));
   } catch (err) {
-    console.error("User ", username, " failed to login");
+    console.error("User", username, "failed to login");
     return res.status(400).json({ error: "Invalid credentials" });
   }
   return res.status(200).json({ sessionKey });
