@@ -113,7 +113,7 @@ const onLogin = async () => {
 		const loginResult = opaque.client.finishLogin({
 			clientLoginState,
 			loginResponse,
-			password,
+			password: password.value,
 		});
 		if (!loginResult) {
 			throw new Error("Login failed");
