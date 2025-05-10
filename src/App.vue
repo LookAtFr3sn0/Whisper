@@ -1,5 +1,5 @@
 <script setup>
-import Navbar from '@/components/Navbar.view.vue'
+import Navbar from '@/components/Navbar.component.vue'
 </script>
 
 <template>
