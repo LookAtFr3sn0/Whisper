@@ -128,9 +128,12 @@ const onLogin = async () => {
 	} finally {
 		isSubmitting.value = false;
 	}
+
 	if (response && response.ok) {
 		router.push({ name: 'inbox' });
 	}
+	username.value = '';
+	password.value = '';
 }
 
 onMounted(async () => {
