@@ -6,7 +6,7 @@ import * as opaque from "@serenity-kit/opaque";
 import gsap from 'gsap';
 
 const router = useRouter();
-const page                 = ref('signin');
+const page                 = ref('welcome');
 const username 	           = ref('');
 const email                = ref('');
 const password             = ref('');
