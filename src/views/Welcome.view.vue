@@ -15,7 +15,6 @@ const usernameError        = ref('');
 const emailError           = ref('');
 const passwordError        = ref('');
 const confirmPasswordError = ref('');
-const passwordStrength     = ref('');
 const showPassword         = ref(false);
 const isSubmitting         = ref(false);
 
