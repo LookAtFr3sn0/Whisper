@@ -26,8 +26,14 @@ export default async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 
-  const { sessionKey } = opaque.server.finishLogin({
-    finishLoginRequest,
-    serverLoginState,
-  });
+  let sessionKey;
+  try {
+    ({ sessionKey } = opaque.server.finishLogin({
+      finishLoginRequest,
+      serverLoginState,
+    }));
+  } catch (err) {
+    console.error("Opaque protocol error at finish server login:", err);
+    return res.status(400).json({ error: "Invalid credentials" });
+  }
 };
