@@ -132,7 +132,9 @@ const onLogin = async () => {
 	} finally {
 		isSubmitting.value = false;
 	}
-	router.push({ name: 'inbox' });
+	if (response && response.ok) {
+		router.push({ name: 'inbox' });
+	}
 }
 
 onMounted(async () => {
