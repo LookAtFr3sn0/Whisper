@@ -2,9 +2,6 @@ import Sequelize from "sequelize";
 import sequelize from "../utils/db.js";
 import * as opaque from "@serenity-kit/opaque";
 
-const serverSetup = process.env.OPAQUE_SERVER_SETUP as string;
-const jwtSecret = process.env.JWT_SECRET as string;
-
 export default async (req, res) => {
   const { username, finishLoginRequest } = req.body;
   
