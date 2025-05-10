@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import sequelize from "../utils/db.js";
 import * as opaque from "@serenity-kit/opaque";
+import { v7 as uuidv7 } from "uuid";
 
 const serverSetup = process.env.OPAQUE_SERVER_SETUP as string;
 const jwtSecret = process.env.JWT_SECRET as string;
@@ -39,9 +40,9 @@ export default async (req, res) => {
 
   try {
     await sequelize.query(
-      `INSERT INTO "user".login_state (user_id, login_state) VALUES (:userId, :loginState)`,
+      `INSERT INTO "user".login_state (id, user_id, login_state) VALUES (:id, :userId, :loginState)`,
       {
-        replacements: { userId, loginState: serverLoginState },
+        replacements: { id: uuidv7(), userId, loginState: serverLoginState },
         type: Sequelize.QueryTypes.INSERT,
       }
     );

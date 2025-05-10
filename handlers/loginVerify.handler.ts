@@ -11,9 +11,10 @@ export default async (req, res) => {
   let results, serverLoginState;
   try {
     results = await sequelize.query(
-      `SELECT a.id, ls.login_state FROM "user".auth a
-      JOIN "user".login_state ls ON a.id = ls.user_id
-      WHERE a.username = :username`,
+      `SELECT a.user_id, ls.login_state FROM "user".auth a
+      JOIN "user".login_state ls ON a.user_id = ls.user_id
+      WHERE a.username = :username
+      ORDER BY a.user_id`,
       {
         replacements: { username },
         type: Sequelize.QueryTypes.SELECT,
@@ -36,4 +37,5 @@ export default async (req, res) => {
     console.error("Opaque protocol error at finish server login:", err);
     return res.status(400).json({ error: "Invalid credentials" });
   }
+  return res.status(200).json({ sessionKey });
 };
