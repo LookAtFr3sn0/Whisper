@@ -51,6 +51,5 @@ export default async (req, res) => {
     console.error("Error inserting login state into database:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
-  const token = jwt.sign({ userId }, jwtSecret, { expiresIn: "2m" });
-  res.status(200).json({ token, loginResponse });
+  return res.status(200).json({ loginResponse });
 };
