@@ -25,13 +25,9 @@ const validateUsername = () => {
 }
 
 const validateEmail = () => {
-	if (!email.value) {
-		emailError.value = 'Email is required.';
-	} else if (!EmailValidator.validate(email.value)) {
-		emailError.value = 'Invalid email address.';
-	} else {
-		emailError.value = '';
-	}
+	if (!email.value) emailError.value = 'Email is required.';
+	else if (!EmailValidator.validate(email.value)) emailError.value = 'Invalid email address.';
+	else emailError.value = '';
 }
 
 const validatePassword = () => {
