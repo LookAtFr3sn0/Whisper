@@ -40,6 +40,13 @@ export default async (req, res) => {
 
   try {
     await sequelize.query(
+      `DELETE FROM "user".login_state WHERE user_id = :userId`,
+      {
+        replacements: { userId },
+        type: Sequelize.QueryTypes.DELETE,
+      }
+    );
+    await sequelize.query(
       `INSERT INTO "user".login_state (id, user_id, login_state) VALUES (:id, :userId, :loginState)`,
       {
         replacements: { id: uuidv7(), userId, loginState: serverLoginState },
