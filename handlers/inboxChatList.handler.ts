@@ -1,0 +1,43 @@
+import Sequelize from 'sequelize';
+import sequelize from '../utils/db.js';
+import { v7 as uuidv7, NIL } from 'uuid';
+
+export default async (req, res) => {
+  const userId = NIL; //todo replace with actual user id
+  let { limit = 10, offset = 0 } = req.query;
+  limit = Math.max(limit, 20);
+
+  let chatlist;
+  try {
+    const results = await sequelize.query(
+      `SELECT
+        c.id,
+        c.is_group,
+        c.title,
+        m.id AS last_message_id,
+        m.ciphertext as last_message,
+        m.sender_id,
+        m.deleted
+      FROM inbox.participants p
+      JOIN inbox.conversations c ON c.id = p.chat_id
+      LEFT JOIN LATERAL (
+        SELECT *
+        FROM inbox.messages m
+        WHERE m.chat_id = c.id
+        ORDER BY m.id DESC
+        LIMIT 1
+      ) m ON true
+      WHERE p.user_id = :userId
+      ORDER BY m.id DESC NULLS LAST;`,
+      {
+        replacements: { userId },
+        type: Sequelize.QueryTypes.SELECT,
+      }
+    );
+    console.log(results);
+    return res.status(200).json();
+  } catch (error) {
+    console.error('Error fetching chat list:', error);
+    return res.status(500).json({ error: 'Internal Server Error' })
+  };
+};
