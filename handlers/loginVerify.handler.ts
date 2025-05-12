@@ -79,5 +79,5 @@ export default async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 
-  return res.cookie("sessionId", sessionId, { httpOnly: true, secure: true }).status(200).json({ message: "Login successful" });
+  return res.cookie("sessionKey", sessionKey, { httpOnly: true, secure: true }).status(200).json({ message: "Login successful" });
 };

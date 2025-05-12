@@ -3,7 +3,7 @@ import sequelize from "./db.js";
 
 export default async (req) => {
   if (!req.cookies) return null;
-  const sessionKey = req.cookies.sessionId;
+  const sessionKey = req.cookies.sessionKey;
   if (!sessionKey) return null;
   try {
     const results = await sequelize.query(
