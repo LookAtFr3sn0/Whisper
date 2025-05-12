@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default async (req, res) => {
   const { token, finishLoginRequest, sessionKey: userSessionKey } = req.body;
+  console.log(token, finishLoginRequest, userSessionKey);
   if (!token || !finishLoginRequest) return res.status(400).json({ error: "All fields are required" });
   let username;
   try {
@@ -49,7 +50,7 @@ export default async (req, res) => {
   const sessionId = uuidv4();
   try {
     await sequelize.query(
-      `INSERT INTO "user".session (id, session_key, user_id) VALUES (:id, :sessionKey, (SELECT id FROM "user".auth WHERE username = :username))`,
+      `INSERT INTO "user"."session" (id, session_key, user_id) VALUES (:id, :sessionKey, (SELECT id FROM "user".auth WHERE username = :username))`,
       {
         replacements: { id: sessionId, sessionKey, username },
         type: Sequelize.QueryTypes.INSERT,
