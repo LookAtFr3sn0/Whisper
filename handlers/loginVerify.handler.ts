@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
 export default async (req, res) => {
-  const { token, finishLoginRequest } = req.body;
+  const { token, finishLoginRequest, sessionKey: userSessionKey } = req.body;
   if (!token || !finishLoginRequest) return res.status(400).json({ error: "All fields are required" });
   let username;
   try {
@@ -39,6 +39,10 @@ export default async (req, res) => {
       serverLoginState,
     }));
   } catch (err) {
+    console.error("User", username, "failed to login");
+    return res.status(400).json({ error: "Invalid credentials" });
+  }
+  if (sessionKey !== userSessionKey) {
     console.error("User", username, "failed to login");
     return res.status(400).json({ error: "Invalid credentials" });
   }
