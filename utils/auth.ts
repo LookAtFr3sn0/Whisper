@@ -17,7 +17,7 @@ export default async (req) => {
       }
     );
     if (results.length > 0) {
-      return results[0]; // userId
+      return results[0].id; // userId
     }
     return null;
   } catch (error) {
