@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 
 export default async (req, res) => {
   const { token, finishLoginRequest, sessionKey: userSessionKey } = req.body;
-  console.log(token, finishLoginRequest, userSessionKey);
   if (!token || !finishLoginRequest) return res.status(400).json({ error: "All fields are required" });
   let username;
   try {
