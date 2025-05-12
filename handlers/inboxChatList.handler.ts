@@ -13,8 +13,6 @@ export default async (req, res) => {
 
   let { limit = 10, offset = 0 } = req.query;
   limit = Math.max(limit, 20);
-
-  let chatlist;
   try {
     const results = await sequelize.query(
       `SELECT
@@ -41,8 +39,18 @@ export default async (req, res) => {
         type: Sequelize.QueryTypes.SELECT,
       }
     );
-    console.log(results);
-    return res.status(200).json();
+    const chatList = results.map((chat) => {
+      return {
+        id: chat.id,
+        isGroup: chat.is_group,
+        title: chat.title,
+        lastMessage: chat.last_message,
+        lastMessageId: chat.last_message_id,
+        senderId: chat.sender_id,
+        deleted: chat.deleted
+      }
+    });
+    return res.status(200).json(chatList);
   } catch (error) {
     console.error('Error fetching chat list:', error);
     return res.status(500).json({ error: 'Internal Server Error' })
