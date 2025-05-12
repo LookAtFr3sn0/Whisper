@@ -7,7 +7,7 @@ export default async (req) => {
   if (!sessionKey) return null;
   try {
     const results = await sequelize.query(
-      `SELECT a.username FROM "user".auth a
+      `SELECT a.id FROM "user".auth a
       JOIN "user"."session" s ON a.id = s.user_id
       WHERE s.session_key = :sessionKey
       AND s.revoked = false`,
@@ -17,7 +17,7 @@ export default async (req) => {
       }
     );
     if (results.length > 0) {
-      return results[0]; // username
+      return results[0]; // userId
     }
     return null;
   } catch (error) {
