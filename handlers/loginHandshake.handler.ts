@@ -2,8 +2,10 @@ import Sequelize from "sequelize";
 import sequelize from "../utils/db.js";
 import * as opaque from "@serenity-kit/opaque";
 import { v7 as uuidv7 } from "uuid";
+import jwt from "jsonwebtoken";
 
 const serverSetup = process.env.OPAQUE_SERVER_SETUP as string;
+const jwtSecret = process.env.JWT_SECRET as string;
 
 export default async (req, res) => {
   let { username, startLoginRequest } = req.body;
@@ -56,5 +58,6 @@ export default async (req, res) => {
     console.error("Error inserting login state into database:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
-  return res.status(200).json({ loginResponse });
+  const token = jwt.sign({ username }, jwtSecret, { expiresIn: "2m" });
+  return res.status(200).json({ token, loginResponse });
 };

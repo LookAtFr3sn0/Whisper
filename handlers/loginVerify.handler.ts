@@ -1,9 +1,18 @@
 import Sequelize from "sequelize";
 import sequelize from "../utils/db.js";
 import * as opaque from "@serenity-kit/opaque";
+import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
 
 export default async (req, res) => {
-  const { username, finishLoginRequest } = req.body;
+  const { token, finishLoginRequest } = req.body;
+  if (!token || !finishLoginRequest) return res.status(400).json({ error: "All fields are required" });
+  let username;
+  try {
+    username = jwt.verify(token, process.env.JWT_SECRET).username;
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid token" });
+  }
   
   let results, serverLoginState;
   try {
@@ -33,5 +42,31 @@ export default async (req, res) => {
     console.error("User", username, "failed to login");
     return res.status(400).json({ error: "Invalid credentials" });
   }
-  return res.status(200).json({ sessionKey });
+  const sessionId = uuidv4();
+  try {
+    await sequelize.query(
+      `INSERT INTO "user".session (id, session_key, user_id) VALUES (:id, :sessionKey, (SELECT id FROM "user".auth WHERE username = :username))`,
+      {
+        replacements: { id: sessionId, sessionKey, username },
+        type: Sequelize.QueryTypes.INSERT,
+      }
+    );
+  } catch (err) {
+    console.log("Error inserting session into database:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  };
+  try {
+    await sequelize.query(
+      `DELETE FROM "user".login_state WHERE user_id = (SELECT id FROM "user".auth WHERE username = :username)`,
+      {
+        replacements: { username },
+        type: Sequelize.QueryTypes.DELETE,
+      }
+    );
+  } catch (err) {
+    console.error("Error deleting login state from database:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+
+  return res.cookie("sessionId", sessionId, { httpOnly: true, secure: true }).status(200).json({ message: "Login successful" });
 };
