@@ -3,7 +3,7 @@ import path from 'path';
 import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 
-import auth from '../utils/auth.js';
+import auth from '../utils/auth.ts';
 
 export default async (req, res) => {
   const userId = await auth(req);
