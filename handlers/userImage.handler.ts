@@ -27,8 +27,6 @@ export default async (req, res) => {
       return res.status(404).json({ error: 'Image not found' });
     }
     const image = fs.readFileSync(imagePath);
-    res.sendHeader('Content-Type', 'image/jpeg');
-    res.sendHeader('Content-Length', image.length);
     res.sendFile(imagePath, (err) => {
       if (err) {
         throw new Error(err);
