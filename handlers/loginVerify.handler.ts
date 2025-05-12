@@ -49,7 +49,7 @@ export default async (req, res) => {
   const sessionId = uuidv4();
   try {
     await sequelize.query(
-      `DELETE FROM "user"."session" WHERE expired = true AND user_id = (SELECT id FROM "user".auth WHERE username = :username)`,
+      `DELETE FROM "user"."session" WHERE revoked = true AND user_id = (SELECT id FROM "user".auth WHERE username = :username)`,
       {
         replacements: { username },
         type: Sequelize.QueryTypes.DELETE,
