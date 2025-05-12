@@ -52,7 +52,7 @@ export default async (req, res) => {
       }
     );
   } catch (err) {
-    console.log("Error inserting session into database:", err);
+    console.error("Error inserting session into database:", err);
     return res.status(500).json({ error: "Internal server error" });
   };
   try {
