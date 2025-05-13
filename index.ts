@@ -25,6 +25,7 @@ app.get("/*splat", (req, res) => {
     })
 });
 
+app.disable('x-powered-by');
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
