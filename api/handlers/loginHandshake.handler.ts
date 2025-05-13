@@ -16,7 +16,7 @@ export default async (req, res) => {
   let results, registrationRecord, userId;
   try {
     results = await sequelize.query(
-      `SELECT id, registration_record FROM "user".auth WHERE username = :username`,
+      `SELECT id, registration_record, email_verified FROM "user".auth WHERE username = :username`,
       {
         replacements: { username },
         type: Sequelize.QueryTypes.SELECT,
@@ -24,8 +24,12 @@ export default async (req, res) => {
     );
     registrationRecord = results[0]?.registration_record;
     userId = results[0]?.id;
+    const emailVerified = results[0]?.email_verified;
     if (!registrationRecord) {
       return res.status(400).json({ error: "Invalid username" });
+    }
+    if (!emailVerified) {
+      return res.status(403).json({ error: "Please verify your email address" });
     }
   } catch (err) {
     console.error("Error querying database:", err);
