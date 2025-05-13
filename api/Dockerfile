@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:bookworm
 
 WORKDIR /api
 COPY package*.json ./
