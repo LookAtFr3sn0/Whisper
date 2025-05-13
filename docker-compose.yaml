@@ -17,11 +17,11 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
-    command: /bin/bash -c "until pg_isready -U ${POSTGRES_USER} -p 5432; do sleep 1; done; psql -U ${POSTGRES_USER} -c 'CREATE DATABASE ${POSTGRES_DB};"
+    command: /bin/bash -c "until pg_isready -U whisper -p 5432; do sleep 1; done; psql -U whisper -c 'CREATE DATABASE whisper;'"
     networks:
       - db
   
-  backend:
+  api:
     build: ./api
     container_name: api
     restart: unless-stopped
@@ -56,3 +56,6 @@ networks:
     driver: bridge
   api:
     driver: bridge
+volumes:
+  db:
+    driver: local
