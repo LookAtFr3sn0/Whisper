@@ -20,7 +20,7 @@ services:
     command: /bin/bash -c "until pg_isready -U whisper -p 5432; do sleep 1; done; psql -U whisper -c 'CREATE DATABASE whisper;'"
     networks:
       - db
-  
+      
   api:
     build: ./api
     container_name: api
@@ -38,7 +38,7 @@ services:
       - db
       - api
   nginx:
-    image: nginx:latest
+    image: nginx:1.28
     container_name: nginx
     restart: unless-stopped
     ports:
