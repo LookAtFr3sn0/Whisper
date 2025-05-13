@@ -29,7 +29,7 @@ export default async (req, res) => {
       return res.status(400).json({ error: "Invalid username" });
     }
     if (!emailVerified) {
-      return res.status(403).json({ error: "Please verify your email address" });
+      return res.status(400).json({ error: "Please verify your email address" });
     }
   } catch (err) {
     console.error("Error querying database:", err);

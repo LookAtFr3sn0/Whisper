@@ -32,8 +32,8 @@ export default async (req, res) => {
     const createdAtMs = new Date(timeFromUUID(user.id));
     const now = Date.now();
 
-    // Only delete if older than 7 days AND email has not been verified
-    if ((now - createdAtMs.getTime()) > (7 * 24 * 60 * 60 * 1000) && !user.email_verified) {
+    // Only delete if older than 24 hours AND email has not been verified
+    if ((now - createdAtMs.getTime()) > (24 * 60 * 60 * 1000) && !user.email_verified) {
       try {
         await sequelize.query(
           `DELETE FROM "user".auth WHERE username = :username`,
