@@ -47,9 +47,9 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - backend
+      - api
     networks:
-      - backend
+      - api
 
 networks:
   db:
