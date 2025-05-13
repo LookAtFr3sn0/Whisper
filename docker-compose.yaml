@@ -22,8 +22,8 @@ services:
       - db
   
   backend:
-    build: ./backend
-    container_name: backend
+    build: ./api
+    container_name: api
     restart: unless-stopped
     environment:
       - DB_HOST: db
@@ -36,7 +36,7 @@ services:
       - db
     networks:
       - db
-      - backend
+      - api
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -54,5 +54,5 @@ services:
 networks:
   db:
     driver: bridge
-  backend:
+  api:
     driver: bridge
