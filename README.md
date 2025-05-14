@@ -26,9 +26,9 @@ To run this project locally:
    - Replace `your-jwt-secret` with a secure secret for JWT authentication.
 
 3. **HTTPS Certificate (Optional):**
-   By default, the backend supports HTTPS using your own certificate and key files. Place your certificate (`cert.crt`) and key (`cert.key`) in the `certs` directory if you want to enable HTTPS. If these files are not present, the backend will run without HTTPS (using HTTP only).
+   The backend will automatically detect if HTTPS certificates are present. If you place your certificate (`cert.crt`) and key (`cert.key`) in the `certs` directory, HTTPS will be enabled and HTTP will redirect to HTTPS. If these files are not present, the backend will serve content over HTTP only.
 
-   - You can configure whether to use HTTPS or HTTP by providing or omitting the certificate files.
+   - No configuration is needed—just add or remove the certificate files to control HTTPS.
 
 4. **Add the Frontend Code:**
    The code for the frontend can either be built or downloaded from the respective repository, place the resulting files in the `public` folder. This allows Nginx to serve the frontend along with the backend API.
