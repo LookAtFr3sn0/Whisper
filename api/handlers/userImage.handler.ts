@@ -3,12 +3,7 @@ import path from 'path';
 import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 
-import auth from '../utils/auth.ts';
-
 export default async (req, res) => {
-  const userId = await auth(req);
-  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
   try {
     const results = await sequelize.query(
       `SELECT u.image FROM "user".profile u

@@ -2,12 +2,8 @@ import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 import { v7 as uuidv7 } from 'uuid';
 
-import auth from '../utils/auth.ts';
 
 export default async (req, res) => {
-  const userId = await auth(req);
-  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
   let { limit = 10, offset = 0 } = req.query;
   limit = Math.max(limit, 20);
   try {
