@@ -25,11 +25,23 @@ To run this project locally:
    - Replace `your-opaque-server-setup-string` with your OPAQUE server setup string.
    - Replace `your-jwt-secret` with a secure secret for JWT authentication.
 
-3. **Add HTTPS Certificate:**
+3. **Add HTTPS certificate:**
    The backend supports HTTPS using your own certificate and key files. Place your certificate (`cert.crt`) and key (`cert.key`) in the `certs` directory.
 
-4. **Add the Frontend Code:**
-   The code for the frontend can either be built or downloaded from the respective repository, place the resulting files in the `public` folder. This allows Nginx to serve the frontend along with the backend API.
+4. **Build and frontend Code:**
+   1. Open a terminal and navigate to the `Frontend` directory:
+      ```sh
+      cd frontend
+      ```
+   2. Install dependencies:
+      ```sh
+      npm install
+      ```
+   3. Build the frontend:
+      ```sh
+      npm run build
+      ```   
+   This allows Nginx to serve the frontend along with the backend API.
 
 5. **Start the services:**
    Make sure you have [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) installed. Then run:
@@ -39,8 +51,5 @@ To run this project locally:
 
    This will start the PostgreSQL database, API server, and Nginx reverse proxy.
 
-## Notes
-- This project is for portfolio purposes and may not be production-ready.
-- Feel free to explore, fork, or contribute!
-
+---
 If you have any questions, feel free to reach out via GitHub.
