@@ -1,6 +1,6 @@
-# Whisper Backend
+# Whisper
 
-This is the backend for my personal project, **Whisper**. I decided to publish the source code to showcase my work.
+This is the code for my personal project, **Whisper**.
 
 ## Getting Started
 
