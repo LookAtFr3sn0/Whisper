@@ -5,8 +5,8 @@ const db = "postgres://" + process.env.DB_HOST + ":5432/" + process.env.DB_NAME;
 const sequelize = new Sequelize(db, {
   dialect: "postgres",
   logging: false,
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
 });
 
 sequelize
