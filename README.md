@@ -25,10 +25,15 @@ To run this project locally:
    - Replace `your-opaque-server-setup-string` with your OPAQUE server setup string.
    - Replace `your-jwt-secret` with a secure secret for JWT authentication.
 
-3. **Add the Frontend Code:**
+3. **HTTPS Certificate (Optional):**
+   By default, the backend supports HTTPS using your own certificate and key files. Place your certificate (`cert.crt`) and key (`cert.key`) in the `certs` directory if you want to enable HTTPS. If these files are not present, the backend will run without HTTPS (using HTTP only).
+
+   - You can configure whether to use HTTPS or HTTP by providing or omitting the certificate files.
+
+4. **Add the Frontend Code:**
    The code for the frontend can either be built or downloaded from the respective repository, place the resulting files in the `public` folder. This allows Nginx to serve the frontend along with the backend API.
 
-4. **Start the services:**
+5. **Start the services:**
    Make sure you have [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) installed. Then run:
    ```sh
    docker-compose up --build
