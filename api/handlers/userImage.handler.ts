@@ -22,7 +22,7 @@ export default async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
     const imageName = results[0].image;
-    const imagePath = path.join(process.env.HOME_DIR as string, 'profile_pictures', imageName);
+    const imagePath = path.join('/data/profile_pictures', imageName);
     if (!fs.existsSync(imagePath)) {
       return res.status(404).json({ error: 'Image not found' });
     }

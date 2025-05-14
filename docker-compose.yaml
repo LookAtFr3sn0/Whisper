@@ -8,6 +8,7 @@ services:
       POSTGRES_DB: whisper
     volumes:
       - db:/var/lib/postgresql/data
+      - userData:/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
       - "5432"
@@ -60,4 +61,6 @@ networks:
     driver: bridge
 volumes:
   db:
+    driver: local
+  userData:
     driver: local
