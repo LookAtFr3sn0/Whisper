@@ -8,7 +8,7 @@ To run this project locally:
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/LookAtFr3sn0/WhisperBackend.git
+   git clone https://github.com/LookAtFr3sn0/Whisper.git
    cd whisper-backend
    ```
 
