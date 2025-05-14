@@ -4,8 +4,9 @@ import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
 
 export default async (req, res) => {
+  const userId = req.userId;
   try {
-    const results = await sequelize.query<{ image: String }>(
+    const results = await sequelize.query<{ image: string }>(
       `SELECT u.image FROM "user".profile u
       WHERE u.id = :userId;`,
       {
