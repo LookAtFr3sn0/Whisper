@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 import sequelize from "../utils/db.js";
 import * as opaque from "@serenity-kit/opaque";
 import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, v7 as uuidv7 } from "uuid";
 
 export default async (req, res) => {
   const { token, finishLoginRequest, sessionKey: userSessionKey } = req.body;
@@ -46,7 +46,7 @@ export default async (req, res) => {
     console.error("User", username, "failed to login");
     return res.status(400).json({ error: "Invalid credentials" });
   }
-  const sessionId = uuidv4();
+  const sessionId = uuidv7();
   try {
     await sequelize.query(
       `DELETE FROM "user"."session" WHERE revoked = true AND user_id = (SELECT id FROM "user".auth WHERE username = :username)`,
@@ -79,5 +79,7 @@ export default async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 
-  return res.cookie("sessionKey", sessionKey, { httpOnly: true, secure: true }).status(200).json({ message: "Login successful" });
+  const newToken = jwt.sign({ sessionKey }, process.env.JWT_SECRET, { expiresIn: "28d" });
+
+  return res.cookie("token", newToken, { httpOnly: true, secure: true }).status(200).json({ message: "Login successful" });
 };

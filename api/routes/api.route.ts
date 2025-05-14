@@ -8,9 +8,10 @@ import loginRoutes from './login.route.ts';
 import inboxRoutes from './inbox.route.ts';
 import userRoutes from './user.route.ts';
 
-router.use(auth);
 router.use('/register', registerRoutes);
 router.use('/login', loginRoutes);
+
+router.use(auth);
 router.use('/inbox', inboxRoutes);
 router.use('/user', userRoutes);
 
