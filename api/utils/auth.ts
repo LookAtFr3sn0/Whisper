@@ -6,7 +6,7 @@ export default async (req) => {
   const sessionKey = req.cookies.sessionKey;
   if (!sessionKey) return null;
   try {
-    const results = await sequelize.query(
+    const results = await sequelize.query<{id: number}>(
       `SELECT a.id FROM "user".auth a
       JOIN "user"."session" s ON a.id = s.user_id
       WHERE s.session_key = :sessionKey
