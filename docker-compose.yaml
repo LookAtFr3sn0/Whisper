@@ -26,6 +26,8 @@ services:
     build: ./api
     container_name: api
     restart: unless-stopped
+    env_file:
+      - API.env
     environment:
       DB_HOST: db
       DB_USER: whisper
