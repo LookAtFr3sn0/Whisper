@@ -14,10 +14,10 @@ export default async (req, res) => {
         type: Sequelize.QueryTypes.SELECT,
       }
     );
-    if (results.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+    if (results.length === 0) return res.status(500).json({ error: 'Internal server error' });
+
     const imageName = results[0].image;
+    if (!imageName) return res.status(200).json({ image: null });
     const imagePath = path.join('/data/profile_pictures', imageName);
     if (!fs.existsSync(imagePath)) {
       return res.status(200);
