@@ -15,10 +15,10 @@ export default async (req, res, next) => {
   }
 
   try {
-    const results = await sequelize.query<{id: number, session_id}>(
-      `SELECT a.id, s.id as session_id FROM "user".auth a
+    const results = await sequelize.query<{id: number, session_id, session_key: string}>(
+      `SELECT a.id, s.id as session_id, s.session_key FROM "user".auth a
       JOIN "user"."session" s ON a.id = s.user_id
-      WHERE s.session_key = :sessionKey
+      WHERE (s.session_key = :sessionKey OR s.prev_session_key = :sessionKey)
       AND s.revoked = false`,
       {
         replacements: { sessionKey },
@@ -29,6 +29,7 @@ export default async (req, res, next) => {
 
     const userId = results[0].id;
     const sessionId = results[0].session_id;
+    const oldSessionKey = results[0].session_key;
     const newSessionKey = uuidv4();
     req.userId = userId;
     req.sessionId = sessionId;
@@ -37,10 +38,10 @@ export default async (req, res, next) => {
     res.cookie("token", newToken, { httpOnly: true, secure: true, maxAge: 28 * 24 * 60 * 60 * 1000 });
     await sequelize.query(
       `UPDATE "user"."session" s
-      SET session_key = :newSessionKey
+      SET session_key = :newSessionKey, prev_session_key = :oldSessionKey
       WHERE s.id = :sessionId`,
       {
-        replacements: { newSessionKey, sessionId },
+        replacements: { newSessionKey, oldSessionKey, sessionId },
         type: Sequelize.QueryTypes.UPDATE,
       }
     );
