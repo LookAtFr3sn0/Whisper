@@ -7,9 +7,10 @@ export default async (req, res, next) => {
   const token = req.cookies?.token;
   if (!token ) return res.status(401).send("Unauthorized");
 
-  let sessionKey;
+  let sessionKey, decoded;
   try {
-    sessionKey = jwt.verify(token, process.env.JWT_SECRET).sessionKey;
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+    sessionKey = decoded.sessionKey;
   } catch (error) {
     return res.status(401).send("Unauthorized");
   }
@@ -30,21 +31,24 @@ export default async (req, res, next) => {
     const userId = results[0].id;
     const sessionId = results[0].session_id;
     const oldSessionKey = results[0].session_key;
-    const newSessionKey = uuidv4();
     req.userId = userId;
     req.sessionId = sessionId;
 
-    const newToken = jwt.sign({ sessionKey: newSessionKey }, process.env.JWT_SECRET, { expiresIn: "28d" });
-    res.cookie("token", newToken, { httpOnly: true, secure: true, maxAge: 28 * 24 * 60 * 60 * 1000 });
-    await sequelize.query(
-      `UPDATE "user"."session" s
-      SET session_key = :newSessionKey, prev_session_key = :oldSessionKey
-      WHERE s.id = :sessionId`,
-      {
-        replacements: { newSessionKey, oldSessionKey, sessionId },
-        type: Sequelize.QueryTypes.UPDATE,
-      }
-    );
+    const now = Math.floor(Date.now() / 1000);
+    if (decoded.exp && decoded.exp - now <= 14 * 24 * 60 * 60) { // less than 14 days left
+      const newSessionKey = uuidv4();
+      const newToken = jwt.sign({ sessionKey: newSessionKey }, process.env.JWT_SECRET, { expiresIn: "28d" });
+      res.cookie("token", newToken, { httpOnly: true, secure: true, maxAge: 28 * 24 * 60 * 60 * 1000 });
+      await sequelize.query(
+        `UPDATE "user"."session" s
+        SET session_key = :newSessionKey, prev_session_key = :oldSessionKey
+        WHERE s.id = :sessionId`,
+        {
+          replacements: { newSessionKey, oldSessionKey, sessionId },
+          type: Sequelize.QueryTypes.UPDATE,
+        }
+      );
+    }
     next();
   } catch (error) {
     console.error("Error querying database:", error);
