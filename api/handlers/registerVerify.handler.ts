@@ -42,6 +42,13 @@ export default async (req, res) => {
         type: Sequelize.QueryTypes.INSERT,
       }
     );
+    await sequelize.query(
+      `INSERT INTO "user".profile (id) VALUES (:id)`,
+      {
+        replacements: { id: uuid },
+        type: Sequelize.QueryTypes.INSERT,
+      }
+    );
     return res.status(200).json({ message: 'Email sent' });
   } catch (err) {
     console.error('Error saving registration record:', err);
