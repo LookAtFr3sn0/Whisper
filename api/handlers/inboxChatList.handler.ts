@@ -4,6 +4,7 @@ import { v7 as uuidv7 } from 'uuid';
 
 
 export default async (req, res) => {
+  const userId = req.userId;
   let { limit = 10, offset = 0 } = req.query;
   limit = Math.max(limit, 20);
   try {

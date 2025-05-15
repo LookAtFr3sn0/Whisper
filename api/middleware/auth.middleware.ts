@@ -16,7 +16,7 @@ export default async (req, res, next) => {
 
   try {
     const results = await sequelize.query<{id: number, session_id}>(
-      `SELECT a.id, s.session_id FROM "user".auth a
+      `SELECT a.id, s.id as session_id FROM "user".auth a
       JOIN "user"."session" s ON a.id = s.user_id
       WHERE s.session_key = :sessionKey
       AND s.revoked = false`,
@@ -34,7 +34,7 @@ export default async (req, res, next) => {
     await sequelize.query(
       `UPDATE "user"."session" s
       SET session_key = :newSessionKey
-      WHERE s.session_id = :sessionId`,
+      WHERE s.id = :sessionId`,
       {
         replacements: { newSessionKey, sessionId },
         type: Sequelize.QueryTypes.UPDATE,
