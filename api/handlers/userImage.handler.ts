@@ -20,10 +20,10 @@ export default async (req, res) => {
     const imageName = results[0].image;
     const imagePath = path.join('/data/profile_pictures', imageName);
     if (!fs.existsSync(imagePath)) {
-      return res.status(404).json({ error: 'Image not found' });
+      return res.status(200);
     }
     const image = fs.readFileSync(imagePath);
-    res.sendFile(imagePath, (err) => {
+    res.status(200).sendFile(imagePath, (err) => {
       if (err) {
         throw new Error(err);
       }
