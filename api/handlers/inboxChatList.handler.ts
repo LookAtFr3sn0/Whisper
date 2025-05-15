@@ -1,7 +1,5 @@
 import Sequelize from 'sequelize';
 import sequelize from '../utils/db.js';
-import { v7 as uuidv7 } from 'uuid';
-
 
 export default async (req, res) => {
   const userId = req.userId;
