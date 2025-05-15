@@ -68,8 +68,8 @@ ALTER TABLE "user".profile OWNER TO whisper;
 CREATE TABLE "user".session (
     id uuid NOT NULL,
     user_id uuid NOT NULL,
-    session_key uuid NOT NULL,
-    prev_session_key uuid,
+    session_key string NOT NULL,
+    prev_session_key string,
     revoked boolean DEFAULT false
 );
 ALTER TABLE "user".session OWNER TO whisper;
