@@ -26,10 +26,10 @@ export default async (req, res) => {
     userId = results[0]?.id;
     const emailVerified = results[0]?.email_verified;
     if (!registrationRecord) {
-      return res.status(400).json({ error: "Invalid username" });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
     if (!emailVerified) {
-      return res.status(400).json({ error: "Please verify your email address" });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
   } catch (err) {
     console.error("Error querying database:", err);
