@@ -39,11 +39,9 @@ export default async (req, res) => {
       serverLoginState,
     }));
   } catch (err) {
-    console.error("User", username, "failed to login");
     return res.status(400).json({ error: "Invalid credentials" });
   }
   if (sessionKey !== userSessionKey) {
-    console.error("User", username, "failed to login");
     return res.status(400).json({ error: "Invalid credentials" });
   }
   const sessionId = uuidv7();
