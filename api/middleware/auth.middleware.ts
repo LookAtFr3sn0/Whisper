@@ -30,7 +30,11 @@ export default async (req, res, next) => {
     const userId = results[0].id;
     const sessionId = results[0].session_id;
     const newSessionKey = uuidv4();
+    req.userId = userId;
+    req.sessionId = sessionId;
 
+    const newToken = jwt.sign({ sessionKey: newSessionKey }, process.env.JWT_SECRET, { expiresIn: "28d" });
+    res.cookie("token", newToken, { httpOnly: true, secure: true, maxAge: 28 * 24 * 60 * 60 * 1000 });
     await sequelize.query(
       `UPDATE "user"."session" s
       SET session_key = :newSessionKey
@@ -40,11 +44,6 @@ export default async (req, res, next) => {
         type: Sequelize.QueryTypes.UPDATE,
       }
     );
-
-    const newToken = jwt.sign({ sessionKey: newSessionKey }, process.env.JWT_SECRET, { expiresIn: "28d" });
-    res.cookie("token", newToken, { httpOnly: true, secure: true, maxAge: 28 * 24 * 60 * 60 * 1000 });
-    req.userId = userId;
-    req.sessionId = sessionId;
     next();
   } catch (error) {
     console.error("Error querying database:", error);
