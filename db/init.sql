@@ -51,6 +51,15 @@ CREATE TABLE "user".auth (
 );
 ALTER TABLE "user".auth OWNER TO whisper;
 
+CREATE TABLE "user".keys (
+  id uuid primary key,
+  user_id UUID references "user".auth(id) on delete cascade,
+  identity_public BYTEA NOT NULL,
+  signed_prekey_public BYTEA NOT NULL,
+  signed_prekey_signature BYTEA NOT NULL
+);
+ALTER TABLE "user".keys OWNER TO whisper;
+
 CREATE TABLE "user".login_state (
     user_id uuid,
     login_state character varying(256),
