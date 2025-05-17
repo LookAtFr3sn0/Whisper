@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&icon_names=account_circle,chevron_left,visibility,visibility_off");
+@import "tailwindcss";
+
+html {
+  scrollbar-gutter: stable overlay;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48;
+  user-select: none;
+}
+
+.skeleton {
+  background-color: #ddd;
+  overflow: hidden;
+  position: relative;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 4s infinite linear forwards;
+}
+
+@keyframes shimmer {
+  0% { background-position: -600px, 0; }
+  100% { background-position: 600px, 0; }
+}
