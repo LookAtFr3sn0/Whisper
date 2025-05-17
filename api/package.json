@@ -1,6 +1,6 @@
 {
-  "name": "com.lookatfr3sn0.haven.backend",
-  "version": "1.0.0",
+  "name": "com.lookatfr3sn0.haven",
+  "version": "0.1.0",
   "description": "Haven backend",
   "type": "module",
   "main": "index.ts",

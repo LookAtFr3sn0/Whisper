@@ -1,7 +1,7 @@
 {
   "name": "com.lookatfr3sn0.haven.frontend",
   "description": "Haven frontend",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
