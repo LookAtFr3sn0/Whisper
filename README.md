@@ -2,6 +2,14 @@
 
 This is the code for my personal project, **Whisper**.
 
+## Known Limitations
+
+- **No production security audit:** This project is for personal use and has not undergone a professional security review. Use at your own risk.
+- **No email verification:** User registration does not include email verification or password reset flows.
+- **HTTPS certificate management:** You must manually provide and manage your own certificates for HTTPS.
+- **No horizontal scaling:** The current Docker Compose setup is for local/single-instance use only.
+- **No rate limiting:** There is no built-in rate limiting or brute-force protection.
+
 ## Getting Started
 
 To run this project locally:
