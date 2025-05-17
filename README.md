@@ -9,7 +9,7 @@ To run this project locally:
 1. **Clone the repository:**
    ```sh
    git clone https://github.com/LookAtFr3sn0/Whisper.git
-   cd whisper-backend
+   cd whisper
    ```
 
 2. **Create the `.env` file:**
